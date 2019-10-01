@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+
     <link
         href='https://fonts.googleapis.com/css?family=Turret+Road:200&text=Hangman%20Challenge&effect=font-effect-static'
         rel='stylesheet' type='text/css'>
@@ -130,22 +136,20 @@
         https://developer.wordnik.com/docs#!/words/getRandomWord */
 
         /*when the button play is clicked, hidden the settting game page and display another page*/
-        let start_game_button = document.querySelector('#play_game_button');
-        let restart_button = document.querySelector('#restart_game_button')
-        let game_setting = document.querySelector('#game_setting');
-        let game_container = document.querySelector('#game_container')
 
+        $("#play_game_button").click(function() {
+            $("#game_setting").hide();
+            $("#game_container").show()
 
-        start_game_button.onclick = () => {
-            game_setting.style.display = 'none';
-            game_container.style.display = ''
-        }
+        })
 
-        restart_button.onclick = () => {
-            game_setting.style.display = '';
-            game_container.style.display = 'none'
-        }
+        $("#restart_game_button").click(function(){
+            $("#game_setting").show();
+            $("#game_container").hide()
 
+        })
+            
+        
 
 
     </script>
