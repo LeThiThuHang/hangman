@@ -27,37 +27,44 @@
         <h1>Hangman challenges</h1>
     </div>
 
-    <div class='container d-flex flex-column align-center'>
-        <h3>Choose your level: </h3>
+    <!-- game setting page -->
 
-        <div class='container'>
+    <div id='game_setting'>
+        <div class='container d-flex flex-column align-center'>
+            <h3>Choose your level: </h3>
 
-            <div class='row'>
-                <div class='col text-center p-2 border level'>
-                    Easy
-                </div>
-                <div class='col text-center p-1 ml-2 border level'>
-                    Medium
-                </div>
-                <div class='col text-center p-1 ml-2 border level'>
-                    Hard
+            <div class='container'>
+
+                <div class='row'>
+                    <div type='button' class='col text-center p-2 border level'>
+                        Easy
+                    </div>
+                    <div type='button' class='col text-center p-1 ml-2 border level'>
+                        Medium
+                    </div>
+                    <div type='button' class='col text-center p-1 ml-2 border level'>
+                        Hard
+                    </div>
                 </div>
             </div>
+
+            <div class='container'>
+                <img src='photos/Megamanx running-1.png.png'>
+            </div>
+
+            <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
+                PLAY
+            </div>
+
         </div>
 
-        <div class='container text-center photo'>
-            <img src='photos/Megamanx running-1.png.png'>
-        </div>
-
-        <div class='container text-center play mt-5 border'>
-            PLAY
-        </div>
 
     </div>
 
 
-    <!-- hide it now -->
-    <div class='container d-none'>
+
+    <!-- game container -->
+    <div class='container' id='game_container' style="display:none">
         <div class='container animation border'>
             Box for the game animation
         </div>
@@ -107,6 +114,11 @@
             </div>
         </div>
 
+        <div type='button' class='container text-center restart mt-5 border' id='restart_game_button'>
+            Restart
+        </div>
+
+
     </div>
 
 
@@ -116,6 +128,25 @@
         /* get a word when player starts game
         https://www.wordsapi.com/#try
         https://developer.wordnik.com/docs#!/words/getRandomWord */
+
+        /*when the button play is clicked, hidden the settting game page and display another page*/
+        let start_game_button = document.querySelector('#play_game_button');
+        let restart_button = document.querySelector('#restart_game_button')
+        let game_setting = document.querySelector('#game_setting');
+        let game_container = document.querySelector('#game_container')
+
+
+        start_game_button.onclick = () => {
+            game_setting.style.display = 'none';
+            game_container.style.display = ''
+        }
+
+        restart_button.onclick = () => {
+            game_setting.style.display = '';
+            game_container.style.display = 'none'
+        }
+
+
 
     </script>
 

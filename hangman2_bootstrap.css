@@ -13,7 +13,7 @@ body {
     font-size:30px
 }
 
-.play {
+.play, .restart {
     height:50px;
     width: 120px;
     color: white;
