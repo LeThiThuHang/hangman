@@ -1,0 +1,41 @@
+@import url(https://fonts.googleapis.com/css?family=Turret+Road:200,300,400,500,700,800&display=swap);
+
+
+body {
+    font-family: 'Turret Road', cursive;
+}
+
+/* styling for first page */
+.level {
+    height: 60px;
+    color: white;
+    background-color: orange;
+    font-size:30px
+}
+
+.play {
+    height:50px;
+    width: 120px;
+    color: white;
+    background-color: orange;
+    font-size:30px
+}
+
+.photo {
+    height:100px
+}
+
+.animation {
+    height: 120px
+}
+
+.guessbox {
+    height: 120px
+}
+
+.alphabet {
+    color: white;
+    background-color: orange
+
+}
+
