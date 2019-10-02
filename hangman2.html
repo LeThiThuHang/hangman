@@ -158,10 +158,10 @@
         let hidden_word = ''
         let new_hidden_word = ''
         let count = 0
+        let word_length = 5;
 
         /*when users click on the level, get the min length varied from 5 , 8 and 13 for the API call
                 default is 5 length*/
-        let word_length = 5;
 
         $('#easy').click(function () {
             word_length = 5
@@ -181,10 +181,10 @@
                 let random = Math.floor(Math.random() * easy_word_list.length) /*random between 0 and length*/
                 chosen_word = easy_word_list[random].toLowerCase();
             } else if (word_length = 7) {
-                let random = Math.floor(Math.random() * medium_word_list.length) /*random between 0 and length*/
+                let random = Math.floor(Math.random() * medium_word_list.length) 
                 chosen_word = medium_word_list[random].toLowerCase();
             } else {
-                let random = Math.floor(Math.random() * hard_word_list.length) /*random between 0 and length*/
+                let random = Math.floor(Math.random() * hard_word_list.length)
                 chosen_word = hard_word_list[random].toLowerCase();
             }
         }
@@ -207,32 +207,21 @@
 
 
         /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
-
-        $("#play_game_button").click(function () {
-            $("#game_setting").hide();
-            $("#game_container").show();
-            generate_word();
-            display_word();
-
+        function play_game() {
             new_hidden_word = [...hidden_word]
 
-            console.log(new_hidden_word)
-
             $(".alphabet").click(function () {
-
-                /* disabled = $(this).attr("disabled") */
+            
                 disabled = $(this).hasClass("active")
 
                 if (count < 10) {
-
-                    /* if (($(this).attr("disabled")) == undefined) { */
+                    
                     if (disabled == true) {
                         count++;
                         $('#count').html(`<h1>${10 - count} times</h1>`)
                     }
 
-                    $(this).css("background-color", "gray");
-                    /* $(this).attr("disabled", true); */
+                    $(this).css("background-color", "gray");                  
                     $(this).removeClass("active");
                     $(this).addClass("inactive");
                     guess_letter = $(this).text().toLowerCase()
@@ -242,8 +231,6 @@
                             new_hidden_word[i] = guess_letter
                         }
                     }
-                    console.log(new_hidden_word)
-
 
                     $("#chosen_word_display").text(new_hidden_word.join(''))
                     if (check_result(new_hidden_word) == true) {
@@ -256,17 +243,16 @@
                 }
 
             })
-        })
 
-        $("#restart_game_button").click(function () {
-            $("#game_setting").show();
-            $("#game_container").hide();
+        }
+
+        function reset_game() {
             count = 0;
             $('#count').html(`<h1>${10 - count} times</h1>`);
             chosen_word = '';
             hidden_word = '';
 
-            $(".alphabet").each( function() {
+            $(".alphabet").each(function () {
                 console.log('each')
                 if ($(this).hasClass('inactive') == true) {
                     $(this).css("background-color", "orange");
@@ -274,18 +260,30 @@
                     $(this).addClass('active')
                 }
             })
+
+        }
+
+
+        $("#play_game_button").click(function () {
+            $("#game_setting").hide();
+            $("#game_container").show();
+            generate_word();
+            display_word();
+            play_game();
         })
-                
-        
+
+        $("#restart_game_button").click(function () {
+            $("#game_setting").show();
+            $("#game_container").hide();
+            reset_game();
+        })
 
         $("#refresh_game_button").click(function () {
+            reset_game();
             generate_word();
-            /* #avoid same word need to be done */
+            display_word();
+            play_game();
         })
-
-
-        /*when user click on the letter, do the comparison with the chosen word*/
-
 
     </script>
 
