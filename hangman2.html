@@ -6,11 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.min.js"
-      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
     <link
         href='https://fonts.googleapis.com/css?family=Turret+Road:200&text=Hangman%20Challenge&effect=font-effect-static'
@@ -42,13 +39,13 @@
             <div class='container'>
 
                 <div class='row'>
-                    <div type='button' class='col text-center p-2 border level'>
+                    <div type='button' class='col text-center p-2 border level' id='easy'>
                         Easy
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='medium'>
                         Medium
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='hard'>
                         Hard
                     </div>
                 </div>
@@ -75,15 +72,16 @@
             Box for the game animation
         </div>
 
-        <div class='container guessbox border>'>
-            Guess box
+        <div class='container guessbox border'>
+
+            <p id='chosen_word_display'>123</p>
 
         </div>
 
         <div class='container'>
             Display the alphabet collection
             <div class='row m-2'>
-                <div class='col border text-center p-1 alphabet'>A</div>
+                <div class='col border text-center p-1 alphabet' id='id1'>A</div>
                 <div class='col border text-center p-1 ml-1 alphabet'>B</div>
                 <div class='col border text-center p-1 ml-1 alphabet'>C</div>
                 <div class='col border text-center p-1 ml-1 alphabet'>D</div>
@@ -120,9 +118,21 @@
             </div>
         </div>
 
-        <div type='button' class='container text-center restart mt-5 border' id='restart_game_button'>
-            Restart
+        <div class='d-flex flex-row mb-2'>
+            <div type='button' class='container text-center restart mt-5 border' id='restart_game_button'>
+                Restart
+            </div>
+
+            <div type='button' class='container text-center refresh mt-5 border' id='refresh_game_button'>
+                Refresh
+            </div>
+
         </div>
+
+
+
+
+    </div>
 
 
     </div>
@@ -135,24 +145,122 @@
         https://www.wordsapi.com/#try
         https://developer.wordnik.com/docs#!/words/getRandomWord */
 
-        /*when the button play is clicked, hidden the settting game page and display another page*/
+        /* how to read a txt file to Javascript ??? */
 
-        $("#play_game_button").click(function() {
-            $("#game_setting").hide();
-            $("#game_container").show()
+        let easy_word_list = ["able abc", "above abc", "abroad abc", "abuse abc"]
+        let medium_word_list = ["abandon", "ability", "abortion", "absence", "absolute", "absorb"]
+        let hard_word_list = ["absolutely", "academic"]
+        let chosen_word = ''
+        let hidden_word = ''
 
+        let count = 0
+
+        /*when users click on the level, get the min length varied from 5 , 8 and 13 for the API call
+                default is 5 length*/
+        let word_length = 5;
+
+        $('#easy').click(function () {
+            word_length = 5
         })
 
-        $("#restart_game_button").click(function(){
+        $('#medium').click(function () {
+            word_length = 7
+        })
+
+        $('#hard').click(function () {
+            word_length = 13
+        })
+
+        /*after user choose level as easy, and click on play, generate a random word from the list easy*/
+        function generate_word() {
+            if (word_length = 5) {
+                let random = Math.floor(Math.random() * easy_word_list.length) /*random between 0 and length*/
+                chosen_word = easy_word_list[random].toLowerCase();
+            } else if (word_length = 7) {
+                let random = Math.floor(Math.random() * medium_word_list.length) /*random between 0 and length*/
+                chosen_word = medium_word_list[random].toLowerCase();
+            } else {
+                let random = Math.floor(Math.random() * hard_word_list.length) /*random between 0 and length*/
+                chosen_word = hard_word_list[random].toLowerCase();
+            }
+        }
+
+        
+        /* display the chosen word in the guess box  */
+        function display_word() {
+            hidden_word = chosen_word.replace(/\w/g, '_');
+            $("#chosen_word_display").text(hidden_word)
+        }
+
+        /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
+
+        $("#play_game_button").click(function () {
+            $("#game_setting").hide();
+            $("#game_container").show();
+            generate_word();
+            display_word();
+            
+            let new_hidden_word = [...hidden_word]
+
+            console.log(new_hidden_word)
+
+            $(".alphabet").click(function () {
+                console.log(new_hidden_word)
+
+                if (count < 10) {
+                    count++;
+                    $(this).css("background-color", "gray");
+                    guess_letter = $(this).text().toLowerCase()
+
+                    for (i = 0; i < chosen_word.length; i++) {
+                        if (chosen_word[i] == guess_letter) {
+                            new_hidden_word[i] = guess_letter
+                        }
+
+                    }
+                    console.log(new_hidden_word)
+
+                    $("#chosen_word_display").text(new_hidden_word.join(''))
+
+                } else {
+                    alert('You run out of guesses!')
+                }
+
+
+
+
+
+
+            })
+        })
+
+        $("#restart_game_button").click(function () {
             $("#game_setting").show();
             $("#game_container").hide()
-
         })
-            
-        
+
+        $("#refresh_game_button").click(function () {
+            generate_word();
+            /* #avoid same word need to be done */
+        })
+
+
+        /*when user click on the letter, do the comparison with the chosen word*/
+
+
+
+
+
+
+
+
+
+
+
 
 
     </script>
+
 
 
 
