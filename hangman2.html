@@ -70,6 +70,8 @@
     <div class='container' id='game_container' style="display:none">
         <div class='container animation border'>
             Box for the game animation
+            <div id='count'></div>
+            
         </div>
 
         <div class='container guessbox border'>
@@ -199,24 +201,33 @@
             $("#game_container").show();
             generate_word();
             display_word();
-            
+
             let new_hidden_word = [...hidden_word]
 
             console.log(new_hidden_word)
 
             $(".alphabet").click(function () {
                 console.log(new_hidden_word)
+                disabled = $(this).attr("disabled")   
+                console.log(disabled)
+    
+                          
 
                 if (count < 10) {
-                    count++;
+
+                    if (($(this).attr("disabled")) == undefined) {
+                        count++;
+                        $('#count').html(`<h1 id ='count'>${10 - count}</h1>`)
+                    }
+                    
                     $(this).css("background-color", "gray");
+                    $(this).attr("disabled", true);
                     guess_letter = $(this).text().toLowerCase()
 
                     for (i = 0; i < chosen_word.length; i++) {
                         if (chosen_word[i] == guess_letter) {
                             new_hidden_word[i] = guess_letter
                         }
-
                     }
                     console.log(new_hidden_word)
 
@@ -225,8 +236,6 @@
                 } else {
                     alert('You run out of guesses!')
                 }
-
-
 
 
 
