@@ -70,8 +70,10 @@
     <div class='container' id='game_container' style="display:none">
         <div class='container animation border'>
             Box for the game animation
-            <div id='count'></div>
-            
+            <div id='count'>
+                <h1>10 times</h1>
+            </div>
+
         </div>
 
         <div class='container guessbox border'>
@@ -83,12 +85,12 @@
         <div class='container'>
             Display the alphabet collection
             <div class='row m-2'>
-                <div class='col border text-center p-1 alphabet' id='id1'>A</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>B</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>C</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>D</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>E</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>F</div>
+                <div class='col button active border text-center p-1 alphabet' id='id1'>A</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>B</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>C</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>D</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>E</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>F</div>
             </div>
             <div class='row m-2'>
                 <div class='col border text-center p-1 alphabet'>G</div>
@@ -154,7 +156,7 @@
         let hard_word_list = ["absolutely", "academic"]
         let chosen_word = ''
         let hidden_word = ''
-
+        let new_hidden_word = ''
         let count = 0
 
         /*when users click on the level, get the min length varied from 5 , 8 and 13 for the API call
@@ -187,12 +189,22 @@
             }
         }
 
-        
+
         /* display the chosen word in the guess box  */
         function display_word() {
             hidden_word = chosen_word.replace(/\w/g, '_');
             $("#chosen_word_display").text(hidden_word)
         }
+
+        /*check results*/
+        function check_result(array) {
+            if (array.includes('_') == false) {
+                return true
+            } else {
+                return false
+            }
+        }
+
 
         /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
 
@@ -202,26 +214,27 @@
             generate_word();
             display_word();
 
-            let new_hidden_word = [...hidden_word]
+            new_hidden_word = [...hidden_word]
 
             console.log(new_hidden_word)
 
             $(".alphabet").click(function () {
-                console.log(new_hidden_word)
-                disabled = $(this).attr("disabled")   
-                console.log(disabled)
-    
-                          
+
+                /* disabled = $(this).attr("disabled") */
+                disabled = $(this).hasClass("active")
 
                 if (count < 10) {
 
-                    if (($(this).attr("disabled")) == undefined) {
+                    /* if (($(this).attr("disabled")) == undefined) { */
+                    if (disabled == true) {
                         count++;
-                        $('#count').html(`<h1 id ='count'>${10 - count}</h1>`)
+                        $('#count').html(`<h1>${10 - count} times</h1>`)
                     }
-                    
+
                     $(this).css("background-color", "gray");
-                    $(this).attr("disabled", true);
+                    /* $(this).attr("disabled", true); */
+                    $(this).removeClass("active");
+                    $(this).addClass("inactive");
                     guess_letter = $(this).text().toLowerCase()
 
                     for (i = 0; i < chosen_word.length; i++) {
@@ -231,22 +244,39 @@
                     }
                     console.log(new_hidden_word)
 
+
                     $("#chosen_word_display").text(new_hidden_word.join(''))
+                    if (check_result(new_hidden_word) == true) {
+                        alert('You have guessed it right bitch!')
+                        new_hidden_word = ''
+                    }
 
                 } else {
                     alert('You run out of guesses!')
                 }
-
-
-
 
             })
         })
 
         $("#restart_game_button").click(function () {
             $("#game_setting").show();
-            $("#game_container").hide()
+            $("#game_container").hide();
+            count = 0;
+            $('#count').html(`<h1>${10 - count} times</h1>`);
+            chosen_word = '';
+            hidden_word = '';
+
+            $(".alphabet").each( function() {
+                console.log('each')
+                if ($(this).hasClass('inactive') == true) {
+                    $(this).css("background-color", "orange");
+                    $(this).removeClass('inactive')
+                    $(this).addClass('active')
+                }
+            })
         })
+                
+        
 
         $("#refresh_game_button").click(function () {
             generate_word();
@@ -255,17 +285,6 @@
 
 
         /*when user click on the letter, do the comparison with the chosen word*/
-
-
-
-
-
-
-
-
-
-
-
 
 
     </script>
