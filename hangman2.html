@@ -51,8 +51,9 @@
                 </div>
             </div>
 
-            <div class='container'>
-                <img src='photos/Megamanx running-1.png.png'>
+            <div class='container text-center'>
+                <img src='photos/Megamanx running gif.gif'>
+
             </div>
 
             <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
@@ -71,8 +72,11 @@
         <div class='container animation border'>
             Box for the game animation
             <div id='count'>
-                <h1>10 times</h1>
+                <h1>10 steps to die</h1>
             </div>
+            <canvas id='canvas' width='1200' height='264'></canvas>
+            <button onclick="animate_1_step()">Move</button>
+            <button onclick="stopAnimate()">Stop</button>
 
         </div>
 
@@ -93,32 +97,32 @@
                 <div class='col button active border text-center p-1 ml-1 alphabet'>F</div>
             </div>
             <div class='row m-2'>
-                <div class='col border text-center p-1 alphabet'>G</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>H</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>I</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>J</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>K</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>L</div>
+                <div class='col button active border text-center p-1 alphabet'>G</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>H</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>I</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>J</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>K</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>L</div>
             </div>
             <div class='row m-2'>
-                <div class='col border text-center p-1 alphabet'>M</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>N</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>O</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>P</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>Q</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>R</div>
+                <div class='col button active border text-center p-1 alphabet'>M</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>N</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>O</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>P</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>Q</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>R</div>
             </div>
             <div class='row m-2'>
-                <div class='col border text-center p-1 alphabet'>S</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>T</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>U</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>V</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>W</div>
-                <div class='col border text-center p-1 ml-1 alphabet'>X</div>
+                <div class='col button active border text-center p-1 alphabet'>S</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>T</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>U</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>V</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>W</div>
+                <div class='col button active border text-center p-1 ml-1 alphabet'>X</div>
             </div>
             <div class='row m-2'>
-                <div class='col-2 border text-center p-1 alphabet'>Y</div>
-                <div class='col-2 border text-center p-1 ml-1 alphabet'>Z</div>
+                <div class='col-2 button active border text-center p-1 alphabet'>Y</div>
+                <div class='col-2 button active border text-center p-1 ml-1 alphabet'>Z</div>
             </div>
         </div>
 
@@ -181,7 +185,7 @@
                 let random = Math.floor(Math.random() * easy_word_list.length) /*random between 0 and length*/
                 chosen_word = easy_word_list[random].toLowerCase();
             } else if (word_length = 7) {
-                let random = Math.floor(Math.random() * medium_word_list.length) 
+                let random = Math.floor(Math.random() * medium_word_list.length)
                 chosen_word = medium_word_list[random].toLowerCase();
             } else {
                 let random = Math.floor(Math.random() * hard_word_list.length)
@@ -211,20 +215,28 @@
             new_hidden_word = [...hidden_word]
 
             $(".alphabet").click(function () {
-            
+
                 disabled = $(this).hasClass("active")
 
                 if (count < 10) {
-                    
-                    if (disabled == true) {
-                        count++;
-                        $('#count').html(`<h1>${10 - count} times</h1>`)
-                    }
 
-                    $(this).css("background-color", "gray");                  
+                    $(this).css("background-color", "gray");
                     $(this).removeClass("active");
                     $(this).addClass("inactive");
                     guess_letter = $(this).text().toLowerCase()
+
+                    /* if (disabled == true) {
+                        if (chosen_word.includes(guess_letter) == false) {
+                            count++;
+                            $('#count').html(`<h1>${10 - count} steps to die</h1>`);
+                        }
+                    } */
+
+                    if (disabled == true && chosen_word.includes(guess_letter) == false) {
+                            count++;
+                            $('#count').html(`<h1>${10 - count} steps to die</h1>`);
+                            animate_1_step();
+                    }
 
                     for (i = 0; i < chosen_word.length; i++) {
                         if (chosen_word[i] == guess_letter) {
@@ -233,16 +245,19 @@
                     }
 
                     $("#chosen_word_display").text(new_hidden_word.join(''))
+
                     if (check_result(new_hidden_word) == true) {
-                        alert('You have guessed it right bitch!')
-                        new_hidden_word = ''
+                        alert('You have guessed it right bitch!');
+                        new_hidden_word = '';
                     }
 
                 } else {
-                    alert('You run out of guesses!')
+                    $('#count').html(`<h1>Sorry to see you die bitch</h1>`);
+                    alert('Die in hell!');
                 }
 
-            })
+            }
+            )
 
         }
 
@@ -284,6 +299,75 @@
             display_word();
             play_game();
         })
+
+        //ANIMATION PART
+        //use this variable to clear the setInterval
+        let tID
+
+        /* position of canvas where we want to draw our sprite */
+        let canvasWidth = 1400;
+        let canvasHeight = 264;
+
+        //the position where the frame will be drawn
+        let x = 0;
+        let y = 0;
+
+        // to define from where in the canvas we will starting to draw the frame
+        let srcX;
+        let srcY;
+
+        //sprite image width and height
+        let spriteWidth = 2112;
+        let spriteHeight = 264;
+
+        //frame counts
+        let curFrame = 0;
+        let frameCount = 8;
+
+        let rows = 1;
+        let cols = 8;
+
+        //widht and height of each frame
+        let width = spriteWidth / cols;
+        let height = spriteHeight / rows;
+
+        //get the canvas element from HTML to draw an image
+        let canvas = document.getElementById('canvas');
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        let ctx = canvas.getContext('2d'); //context to get the 2d drawing
+
+        //create an image
+        let character = new Image();
+        character.src = 'photos/Megamanx running.png'
+
+        function updateFrame() {
+            curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
+            srcX = curFrame * width
+            srcY = 0;
+            ctx.clearRect(x, y, width, height)
+        }
+
+
+        //call the function draw in the interval to create the illusion
+        function animate_1_step() {
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 1000);
+        }
+
+
+        function draw() {
+            x += 9;
+            updateFrame();
+            ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
+        }
+
+        // stop the animation
+        function stopAnimate() {
+            clearInterval(tID)
+        }
 
     </script>
 

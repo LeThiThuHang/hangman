@@ -26,7 +26,11 @@ body {
 }
 
 .animation {
-    height: 120px
+    height: 400px
+}
+
+.animation h1{
+    font-size: 15px
 }
 
 .guessbox {
