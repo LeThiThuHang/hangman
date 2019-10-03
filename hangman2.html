@@ -27,7 +27,7 @@
 
 <body>
     <div class='container text-center'>
-        <h1>Hangman challenges</h1>
+        <h1>Burning man challenges</h1>
     </div>
 
     <!-- game setting page -->
@@ -52,7 +52,8 @@
             </div>
 
             <div class='container text-center'>
-                <img src='photos/Megamanx running gif.gif'>
+                <img src='photos\Megamanx running burning.gif'>
+
 
             </div>
 
@@ -70,14 +71,13 @@
     <!-- game container -->
     <div class='container' id='game_container' style="display:none">
         <div class='container animation border'>
-            Box for the game animation
+
             <div id='count'>
                 <h1>10 steps to die</h1>
             </div>
-            <canvas id='canvas' width='1200' height='264'></canvas>
-            <button onclick="animate_1_step()">Move</button>
-            <button onclick="stopAnimate()">Stop</button>
-
+            <canvas id='canvas'></canvas>
+            <button onclick="burning_movement()">Falling</button>
+            <button onclick="walking_movement()">Walking</button>
         </div>
 
         <div class='container guessbox border'>
@@ -218,7 +218,7 @@
 
                 disabled = $(this).hasClass("active")
 
-                if (count < 10) {
+                if (count < 9) {
 
                     $(this).css("background-color", "gray");
                     $(this).removeClass("active");
@@ -233,9 +233,9 @@
                     } */
 
                     if (disabled == true && chosen_word.includes(guess_letter) == false) {
-                            count++;
-                            $('#count').html(`<h1>${10 - count} steps to die</h1>`);
-                            animate_1_step();
+                        count++;
+                        $('#count').html(`<h1>${10 - count} steps to die</h1>`);
+                        walking_movement();
                     }
 
                     for (i = 0; i < chosen_word.length; i++) {
@@ -252,8 +252,16 @@
                     }
 
                 } else {
-                    $('#count').html(`<h1>Sorry to see you die bitch</h1>`);
-                    alert('Die in hell!');
+
+                    if (check_result(new_hidden_word) == true) {
+                        alert('You have guessed it right bitch!');
+                        new_hidden_word = '';
+                    } else {
+                        $('#count').html(`<h1>Sorry to see you die bitch</h1>`);
+                        burning_movement();
+                        alert('Die in hell!');
+
+                    }
                 }
 
             }
@@ -306,7 +314,7 @@
 
         /* position of canvas where we want to draw our sprite */
         let canvasWidth = 1400;
-        let canvasHeight = 264;
+        let canvasHeight = 270;
 
         //the position where the frame will be drawn
         let x = 0;
@@ -317,15 +325,15 @@
         let srcY;
 
         //sprite image width and height
-        let spriteWidth = 2112;
-        let spriteHeight = 264;
+        let spriteWidth = 1350;
+        let spriteHeight = 270;
 
         //frame counts
         let curFrame = 0;
-        let frameCount = 8;
+        let frameCount = 10;
 
-        let rows = 1;
-        let cols = 8;
+        let cols = 10;
+        let rows = 2;
 
         //widht and height of each frame
         let width = spriteWidth / cols;
@@ -339,18 +347,53 @@
 
         //create an image
         let character = new Image();
-        character.src = 'photos/Megamanx running.png'
+        character.src = "photos/Megamanx running (5).png"
+
+
+        //The 0th (first) row is for the walking movement
+        let burning = 0;
+        //1st (second) row for the falling movement (counting the index from 0)
+        let falling = 1;
+
+        let move_burning = false
+
+        function walking_movement() {
+            move_burning = false;
+
+            tID = setInterval(draw, 100);
+
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 1000);
+        }
+
+        function burning_movement() {
+            console.log('burning')
+            move_burning = true;
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 10000);
+        }
 
         function updateFrame() {
+
             curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
-            srcX = curFrame * width
-            srcY = 0;
-            ctx.clearRect(x, y, width, height)
+            //Calculating the x coordinate for spritesheet 
+            srcX = curFrame * width;
+
+            if (move_burning) {
+                srcY = falling * height // for walking, scrY is 0, for falling, srcy is the hiehgt
+            } else {
+                x += 5;
+                srcY = burning * height
+            };
+            ctx.clearRect(x, y, width, height);
         }
 
 
-        //call the function draw in the interval to create the illusion
-        function animate_1_step() {
+        function animate_stop() {
+            console.log('animate_stop')
             tID = setInterval(draw, 100);
             setTimeout(() => {
                 clearInterval(tID)
@@ -359,14 +402,9 @@
 
 
         function draw() {
-            x += 9;
+            console.log('draw')
             updateFrame();
             ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
-        }
-
-        // stop the animation
-        function stopAnimate() {
-            clearInterval(tID)
         }
 
     </script>
