@@ -34,7 +34,7 @@
 
     <div id='game_setting'>
         <div class='container d-flex flex-column align-center'>
-       
+
             <h3>Choose your level: </h3>
 
             <div class='container'>
@@ -81,12 +81,14 @@
                         <div class="modal-content p-2">
                             <h3>Save your Megaman: </h3>
                             <ul>
-                                <li>Choose the level of difficulties, which determines the number of letters, hover over each level to know more</li>
+                                <li>Choose the level of difficulties, which determines the number of letters, hover over
+                                    each level to know more</li>
                                 <li>Each word has 10 guesses</li>
                                 <li>Once you guess wrongly, your Megaman will be 1 step closer to burning</li>
-                                <li>After 10 guesses, if you still can not figure it out, your Megaman will be burnt</li>
+                                <li>After 10 guesses, if you still can not figure it out, your Megaman will be burnt
+                                </li>
                             </ul>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -189,9 +191,9 @@
 
         /* how to read a txt file to Javascript ??? */
 
-        let easy_word_list = ["able abc", "above abc", "abroad abc", "abuse abc"]
-        let medium_word_list = ["abandon", "ability", "abortion", "absence", "absolute", "absorb"]
-        let hard_word_list = ["absolutely", "academic"]
+        let easy_word_list = ["apple", "sky", "pen", "house","shame","lame","dumb","fish","chip","cheap","rich","poor","man","female","table","mouse"] // 1-5 words
+        let medium_word_list = ["orange","bottle", "banana", "shame", "absence", "stupid", "absorb","fridge","grape","country","turtle","lipstick","cosmetic"] // 6 to 8
+        let hard_word_list = ["absolutely", "academic","television","international","justification"] // 9 to 13
         let chosen_word = ''
         let hidden_word = ''
         let new_hidden_word = ''
@@ -267,7 +269,7 @@
                         count++;
                         /* $('#count').html(`<h1>Run away from the flame, be faster...${10 - count}</h1>`); */
                         $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
-                        
+
                         //animation
                         walking_movement();
                     }
@@ -293,8 +295,8 @@
                     } else {
                         $('#count').html(`<h1>Sorry to see you die bitch haha</h1>`);
                         //animation
-                        burning_movement();        
-                       
+                        burning_movement();
+
 
                     }
                 }
@@ -306,7 +308,8 @@
 
         function reset_game() {
             count = 0;
-            $('#count').html(`<h1>${10 - count} times</h1>`);
+            /* $('#count').html(`<h1>${10 - count} times</h1>`); */
+            $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
             chosen_word = '';
             hidden_word = '';
 
@@ -331,6 +334,7 @@
         })
 
         $("#restart_game_button").click(function () {
+            burning_movement_clearance();           
             clearcanvas();
             $("#game_setting").show();
             $("#game_container").hide();
@@ -338,6 +342,8 @@
         })
 
         $("#refresh_game_button").click(function () {
+
+            burning_movement_clearance();       
             clearcanvas();
             reset_game();
             generate_word();
@@ -397,7 +403,7 @@
         }
 
         function clearcanvas() {
-            ctx.clearRect(0, 0, 270, 1350)
+            ctx.clearRect(0, 0, 1350, 270)
 
         }
 
@@ -410,68 +416,104 @@
 
         let move_burning = false
 
-        function walking_movement() {
+        /* function walking_movement() {
             clear_initial_character();
-
             move_burning = false;
-
             tID = setInterval(draw, 100);
-
             setTimeout(() => {
                 clearInterval(tID)
             }, 1000);
+        } */
+
+        let walking_queue = 0;
+
+        function walking_movement() {
+            if (walking_queue == 0) {
+                walking_queue += 1;
+                clear_initial_character();
+                move_burning = false;
+                tID = setInterval(draw, 100);
+                setTimeout(() => {
+                    clearInterval(tID); walking_queue -= 1;
+                }, 1000);
+            }
         }
+
+        let time_setting
 
         function burning_movement() {
             clear_initial_character();
-            console.log('burning')
+            
             move_burning = true;
             tID = setInterval(draw, 100);
-            setTimeout(() => {
-                clearInterval(tID)
-            }, 5000);
+            time_setting = setTimeout(() => {
+                clearInterval(tID);
+            }, 1000);  
         }
 
-        function burning_yourself() {
-            clear_initial_character();
-            console.log('burning')
-            move_burning = true;
-            tID = setInterval(draw, 100);
-            setTimeout(() => {
-                clearInterval(tID)
-            }, 1000);
-        }
-
-        function updateFrame() {
-
-            curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
-            //Calculating the x coordinate for spritesheet 
-            srcX = curFrame * width;
-
-            if (move_burning) {
-                srcY = falling * height // for walking, scrY is 0, for falling, srcy is the hiehgt
-            } else {
-                x += 5;
-                srcY = burning * height
-            };
-            ctx.clearRect(x, y, width, height);
+        function burning_movement_clearance() {
+            clearTimeout(time_setting)
+            clearInterval(tID)
         }
 
 
-        function animate_stop() {
-            console.log('animate_stop')
-            tID = setInterval(draw, 100);
-            setTimeout(() => {
-                clearInterval(tID)
-            }, 1000);
-        }
+        /* let burning_queue = 0;
 
 
-        function draw() {
-            console.log('draw')
-            updateFrame();
-            ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
-        }
+        function burning_movement() {
+            if (burning_queue == 0) {
+                burning_queue += 1;
+                clear_initial_character();
+                console.log('burning')
+                move_burning = true;
+                tID = setInterval(draw, 100);
+                setTimeout(() => {
+                    clearInterval(tID);burning_queue -= 1;
+                }, 5000);
+            }
+        } */
+
+
+            function burning_yourself() {
+                clear_initial_character();
+                console.log('burning')
+                move_burning = true;
+                tID = setInterval(draw, 100);
+                setTimeout(() => {
+                    clearInterval(tID)
+                }, 1000);
+            }
+
+            function updateFrame() {
+
+                curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
+                //Calculating the x coordinate for spritesheet 
+                srcX = curFrame * width;
+
+                if (move_burning) {
+                    srcY = falling * height // for walking, scrY is 0, for falling, srcy is the hiehgt
+                } else {
+                    x += 5;
+                    srcY = burning * height
+                };
+                ctx.clearRect(x, y, width, height);
+            }
+
+
+            function animate_stop() {
+                console.log('animate_stop')
+                tID = setInterval(draw, 100);
+                setTimeout(() => {
+                    clearInterval(tID)
+                }, 1000);
+            }
+
+
+            function draw() {
+                console.log('draw')
+                updateFrame();
+                ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
+            }
 
     </script>
 
