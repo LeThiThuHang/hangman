@@ -181,9 +181,31 @@
 
     </div>
 
+    clicked - green, not-click - orange, not-click - orange
+    if
+
 
 
     <script>
+
+        /* to change the button color in the front page */
+        $('.level').click(function () {
+            $('.level').each(function () {
+                $(this).css('background', 'orange');
+
+                if ($(this).hasClass('clicked')) {
+                    $(this).removeClass('clicked');
+                }
+
+                $(this).addClass('not-clicked');
+
+            })
+
+            $(this).css('background', 'green');
+            $(this).removeClass('not-clicked')
+            $(this).addClass('clicked')
+        })
+
 
         /* get a word when player starts game
         https://www.wordsapi.com/#try
@@ -191,9 +213,9 @@
 
         /* how to read a txt file to Javascript ??? */
 
-        let easy_word_list = ["apple", "sky", "pen", "house","shame","lame","dumb","fish","chip","cheap","rich","poor","man","female","table","mouse"] // 1-5 words
-        let medium_word_list = ["orange","bottle", "banana", "shame", "absence", "stupid", "absorb","fridge","grape","country","turtle","lipstick","cosmetic"] // 6 to 8
-        let hard_word_list = ["absolutely", "academic","television","international","justification"] // 9 to 13
+        let easy_word_list = ["apple", "sky", "pen", "house", "shame", "lame", "dumb", "fish", "chip", "cheap", "rich", "poor", "man", "female", "table", "mouse"] // 1-5 words
+        let medium_word_list = ["orange", "bottle", "banana", "shame", "absence", "stupid", "absorb", "fridge", "grape", "country", "turtle", "lipstick", "cosmetic"] // 6 to 8
+        let hard_word_list = ["absolutely", "academic", "television", "international", "justification"] // 9 to 13
         let chosen_word = ''
         let hidden_word = ''
         let new_hidden_word = ''
@@ -203,30 +225,67 @@
         /*when users click on the level, get the min length varied from 5 , 8 and 13 for the API call
                 default is 5 length*/
 
-        $('#easy').click(function () {
-            word_length = 5
-        })
+        function choose_level() {
 
-        $('#medium').click(function () {
-            word_length = 7
-        })
+            /* $('#easy').click(function () {
+                word_length = 5;
+                console.log(word_length)
+            })
 
-        $('#hard').click(function () {
-            word_length = 13
-        })
+            $('#medium').click(function () {
+                word_length = 7;
+                console.log(word_length)
+            })
+
+            $('#hard').click(function () {
+                word_length = 13;
+                console.log(word_length)
+            }) */
+
+         
+            $('.level').each(function () {              
+                if ( $(this).hasClass('clicked') ) {
+                    let id = this.id
+                    console.log(id);
+                    if (id = 'hard') {
+                        word_length = 13
+                    } else if ( id = 'medium') {
+                        word_length = 7
+                    } else {
+                        word_length = 5
+                    }
+                }
+            })
+
+            return word_length
+
+        }
+
+
 
         /*after user choose level as easy, and click on play, generate a random word from the list easy*/
         function generate_word() {
-            if (word_length = 5) {
+
+            word_length = choose_level();
+
+            console.log(word_length)
+
+            console.log(word_length == 5)
+            console.log(word_length == 7)
+            console.log(word_length == 13)
+
+            if (word_length == 5) {
                 let random = Math.floor(Math.random() * easy_word_list.length) /*random between 0 and length*/
                 chosen_word = easy_word_list[random].toLowerCase();
-            } else if (word_length = 7) {
+            } else if (word_length == 7) {
                 let random = Math.floor(Math.random() * medium_word_list.length)
                 chosen_word = medium_word_list[random].toLowerCase();
             } else {
                 let random = Math.floor(Math.random() * hard_word_list.length)
                 chosen_word = hard_word_list[random].toLowerCase();
             }
+
+            console.log(chosen_word)
         }
 
 
@@ -249,6 +308,7 @@
         /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
         function play_game() {
             //draw the first image
+
             initial_character_image();
 
             new_hidden_word = [...hidden_word]
@@ -308,10 +368,10 @@
 
         function reset_game() {
             count = 0;
-            /* $('#count').html(`<h1>${10 - count} times</h1>`); */
             $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
             chosen_word = '';
             hidden_word = '';
+            word_length = 5;
 
             $(".alphabet").each(function () {
                 console.log('each')
@@ -334,7 +394,7 @@
         })
 
         $("#restart_game_button").click(function () {
-            burning_movement_clearance();           
+            burning_movement_clearance();
             clearcanvas();
             $("#game_setting").show();
             $("#game_container").hide();
@@ -343,7 +403,7 @@
 
         $("#refresh_game_button").click(function () {
 
-            burning_movement_clearance();       
+            burning_movement_clearance();
             clearcanvas();
             reset_game();
             generate_word();
@@ -443,12 +503,12 @@
 
         function burning_movement() {
             clear_initial_character();
-            
+
             move_burning = true;
             tID = setInterval(draw, 100);
             time_setting = setTimeout(() => {
                 clearInterval(tID);
-            }, 1000);  
+            }, 1000);
         }
 
         function burning_movement_clearance() {
@@ -474,46 +534,46 @@
         } */
 
 
-            function burning_yourself() {
-                clear_initial_character();
-                console.log('burning')
-                move_burning = true;
-                tID = setInterval(draw, 100);
-                setTimeout(() => {
-                    clearInterval(tID)
-                }, 1000);
-            }
+        function burning_yourself() {
+            clear_initial_character();
+            console.log('burning')
+            move_burning = true;
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 1000);
+        }
 
-            function updateFrame() {
+        function updateFrame() {
 
-                curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
-                //Calculating the x coordinate for spritesheet 
-                srcX = curFrame * width;
+            curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
+            //Calculating the x coordinate for spritesheet 
+            srcX = curFrame * width;
 
-                if (move_burning) {
-                    srcY = falling * height // for walking, scrY is 0, for falling, srcy is the hiehgt
-                } else {
-                    x += 5;
-                    srcY = burning * height
-                };
-                ctx.clearRect(x, y, width, height);
-            }
-
-
-            function animate_stop() {
-                console.log('animate_stop')
-                tID = setInterval(draw, 100);
-                setTimeout(() => {
-                    clearInterval(tID)
-                }, 1000);
-            }
+            if (move_burning) {
+                srcY = falling * height // for walking, scrY is 0, for falling, srcy is the hiehgt
+            } else {
+                x += 5;
+                srcY = burning * height
+            };
+            ctx.clearRect(x, y, width, height);
+        }
 
 
-            function draw() {
-                console.log('draw')
-                updateFrame();
-                ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
-            }
+        function animate_stop() {
+            console.log('animate_stop')
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 1000);
+        }
+
+
+        function draw() {
+            console.log('draw')
+            updateFrame();
+            ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
+        }
 
     </script>
 
