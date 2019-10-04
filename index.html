@@ -181,11 +181,6 @@
 
     </div>
 
-    clicked - green, not-click - orange, not-click - orange
-    if
-
-
-
     <script>
 
         /* to change the button color in the front page */
@@ -226,30 +221,14 @@
                 default is 5 length*/
 
         function choose_level() {
-
-            /* $('#easy').click(function () {
-                word_length = 5;
-                console.log(word_length)
-            })
-
-            $('#medium').click(function () {
-                word_length = 7;
-                console.log(word_length)
-            })
-
-            $('#hard').click(function () {
-                word_length = 13;
-                console.log(word_length)
-            }) */
-
          
             $('.level').each(function () {              
                 if ( $(this).hasClass('clicked') ) {
                     let id = this.id
                     console.log(id);
-                    if (id = 'hard') {
+                    if (id == 'hard') {
                         word_length = 13
-                    } else if ( id = 'medium') {
+                    } else if ( id == 'medium') {
                         word_length = 7
                     } else {
                         word_length = 5
@@ -257,22 +236,16 @@
                 }
             })
 
+            console.log(`choose leve function ${word_length}`)
+
             return word_length
 
         }
-
-
 
         /*after user choose level as easy, and click on play, generate a random word from the list easy*/
         function generate_word() {
 
             word_length = choose_level();
-
-            console.log(word_length)
-
-            console.log(word_length == 5)
-            console.log(word_length == 7)
-            console.log(word_length == 13)
 
             if (word_length == 5) {
                 let random = Math.floor(Math.random() * easy_word_list.length) /*random between 0 and length*/
@@ -285,7 +258,7 @@
                 chosen_word = hard_word_list[random].toLowerCase();
             }
 
-            console.log(chosen_word)
+            console.log(`generate word function ${chosen_word}`)
         }
 
 
@@ -343,7 +316,7 @@
                     $("#chosen_word_display").text(new_hidden_word.join(''))
 
                     if (check_result(new_hidden_word) == true) {
-                        $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :</strong></h1>`);
+                        $('#count').html(`<h1>.<strong>You have guessed it right bitch! If you want, you still can burn yourself :</strong></h1>`);
                         new_hidden_word = '';
                     }
 
@@ -353,7 +326,7 @@
                         $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :)</strong></h1>`);
                         new_hidden_word = '';
                     } else {
-                        $('#count').html(`<h1>Sorry to see you die bitch haha</h1>`);
+                        $('#count').html(`<h1>Sorry to see you die bitch haha. The right word is ${chosen_word}</h1>`);
                         //animation
                         burning_movement();
 
@@ -388,6 +361,7 @@
         $("#play_game_button").click(function () {
             $("#game_setting").hide();
             $("#game_container").show();
+            choose_level();
             generate_word();
             display_word();
             play_game();
@@ -406,6 +380,7 @@
             burning_movement_clearance();
             clearcanvas();
             reset_game();
+
             generate_word();
             display_word();
             play_game();
