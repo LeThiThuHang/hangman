@@ -112,8 +112,8 @@
                 <h1>Guess it right in 10 guesses to not get burned ...<strong>10</strong></h1>
             </div>
             <canvas id='canvas'></canvas>
-            <button id='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button>
-            <!-- <button onclick="walking_movement()">Walking</button> -->
+            <!-- <button id='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button> -->
+            
         </div>
 
         <div class='container guessbox'>
@@ -370,6 +370,7 @@
         $("#restart_game_button").click(function () {
             burning_movement_clearance();
             clearcanvas();
+            reset_image_draw();
             $("#game_setting").show();
             $("#game_container").hide();
             reset_game();
@@ -379,6 +380,9 @@
 
             burning_movement_clearance();
             clearcanvas();
+            reset_image_draw();
+
+
             reset_game();
 
             generate_word();
@@ -492,23 +496,6 @@
         }
 
 
-        /* let burning_queue = 0;
-
-
-        function burning_movement() {
-            if (burning_queue == 0) {
-                burning_queue += 1;
-                clear_initial_character();
-                console.log('burning')
-                move_burning = true;
-                tID = setInterval(draw, 100);
-                setTimeout(() => {
-                    clearInterval(tID);burning_queue -= 1;
-                }, 5000);
-            }
-        } */
-
-
         function burning_yourself() {
             clear_initial_character();
             console.log('burning')
@@ -548,6 +535,14 @@
             console.log('draw')
             updateFrame();
             ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
+        }
+
+        function reset_image_draw () {
+            x = 0;
+            y= 0;
+            srcX = 0;
+            srcY = 0;
+            curFrame = 0;
         }
 
     </script>
