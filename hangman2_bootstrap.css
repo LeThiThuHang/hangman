@@ -8,28 +8,45 @@ body {
 #header {
     font-weight: 700;
     margin: 1rem;
+    font-size: 60px;
 }
 
 /* styling for first page */
-.level {
-    height: 60px;
+/*style for all button*/
+.level, .play, .restart, .refresh, #game_rule_button, #play_game_button, .alphabet, #burning_button {
     color: white;
     background-color: orange;
-    font-size:30px
+    font-size:30px;
+    border-radius: 10px;
 }
 
-.level:hover, .play:hover, .restart:hover, .refresh:hover, .alphabet:hover, #burning_button:hover {
+.level:hover, .play:hover, .restart:hover, .refresh:hover, .alphabet:hover, #burning_button:hover, #game_rule_button:hover, #play_game_button:hover {
     background-color: black;
     font-weight: 700;
 }
 
-.play, .restart, .refresh {
-    height:50px;
-    width: 140px;
-    color: white;
-    background-color: orange;
-    font-size:30px
+.level {
+    height: 60px;
 }
+
+.play, .restart, .refresh, #game_rule_button, #play_game_button{
+    height:60px;
+    width: 140px;
+}
+
+#game_rule_button{
+    width: 200px
+}
+
+#burning_button {
+    background-color: darkorange;
+    font-size: 20px;
+    width:250px;
+    height:40px;
+}
+
+
+
 
 .photo {
     height:100px
@@ -43,7 +60,7 @@ body {
 }
 
 .animation h1{
-    font-size: 15px
+    font-size: 20px
 }
 
 .guessbox {
@@ -54,17 +71,10 @@ body {
     font-weight:500;
 }
 
-.alphabet {
-    color: white;
-    background-color: orange;
-}
 
 
-#burning_button {
-    color: white;
-    background-color: orange;
 
-}
+
 
 
 

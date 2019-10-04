@@ -27,25 +27,29 @@
 
 <body>
     <div class='container text-center'>
-        <h1 id = 'header'>Burning man challenges</h1>
+        <h1 id='header'>Burning man challenges</h1>
     </div>
 
     <!-- game setting page -->
 
     <div id='game_setting'>
         <div class='container d-flex flex-column align-center'>
+       
             <h3>Choose your level: </h3>
 
             <div class='container'>
 
                 <div class='row'>
-                    <div type='button' class='col text-center p-2 border level' id='easy' title='Number of characters between 1 to 5'>
+                    <div type='button' class='col text-center p-2 border level' id='easy'
+                        title='Number of characters between 1 to 5'>
                         Easy
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level' id='medium' title='Number of characters between 6 to 8'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='medium'
+                        title='Number of characters between 6 to 8'>
                         Medium
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level' id='hard' title = 'Number of characters between 9 to 13'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='hard'
+                        title='Number of characters between 9 to 13'>
                         Hard
                     </div>
                 </div>
@@ -56,10 +60,41 @@
 
 
             </div>
+            <div class='container d-flex justify-content-around mt-4'>
 
-            <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
-                Play
+                <!-- <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
+                    Play
+                </div>
+                <div type='button' class='container text-center mt-5 border' id='game_rule_button'>
+                    Rule
+                </div> -->
+
+
+
+                <button type="button" class="btn" id='play_game_button'>Play</button>
+
+                <button type="button" class='btn' data-toggle="modal" data-target=".bd-example-modal-lg"
+                    id='game_rule_button'>Game rule</button>
+
+                <div class="modal fade bd-example-modal-lg" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content p-2">
+                            <h3>Save your Megaman: </h3>
+                            <ul>
+                                <li>Choose the level of difficulties, which determines the number of letters, hover over each level to know more</li>
+                                <li>Each word has 10 guesses</li>
+                                <li>Once you guess wrongly, your Megaman will be 1 step closer to burning</li>
+                                <li>After 10 guesses, if you still can not figure it out, your Megaman will be burnt</li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                </div>
+
+
+
             </div>
+
 
         </div>
 
@@ -70,12 +105,12 @@
 
     <!-- game container -->
     <div class='container' id='game_container' style="display:none">
-        <div class='container animation border'>
+        <div class='container animation'>
             <div id='count'>
-                <h1>Run away from the flame, be faster...10</h1>
+                <h1>Guess it right in 10 guesses to not get burned ...<strong>10</strong></h1>
             </div>
             <canvas id='canvas'></canvas>
-            <button id ='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button>
+            <button id='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button>
             <!-- <button onclick="walking_movement()">Walking</button> -->
         </div>
 
@@ -86,7 +121,7 @@
         </div>
 
         <div class='container'>
-            Choose the character below: 
+            Choose the character below:
             <div class='row m-2'>
                 <div class='col button active border text-center p-1 alphabet' id='id1'>A</div>
                 <div class='col button active border text-center p-1 ml-1 alphabet'>B</div>
@@ -230,7 +265,9 @@
 
                     if (disabled == true && chosen_word.includes(guess_letter) == false) {
                         count++;
-                        $('#count').html(`<h1>Run away from the flame, be faster...${10 - count}</h1>`);
+                        /* $('#count').html(`<h1>Run away from the flame, be faster...${10 - count}</h1>`); */
+                        $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
+                        
                         //animation
                         walking_movement();
                     }
@@ -244,20 +281,20 @@
                     $("#chosen_word_display").text(new_hidden_word.join(''))
 
                     if (check_result(new_hidden_word) == true) {
-                        alert('You have guessed it right bitch!');
+                        $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :</strong></h1>`);
                         new_hidden_word = '';
                     }
 
                 } else {
 
                     if (check_result(new_hidden_word) == true) {
-                        alert('You have guessed it right bitch!');
+                        $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :)</strong></h1>`);
                         new_hidden_word = '';
                     } else {
-                        $('#count').html(`<h1>Sorry to see you die bitch</h1>`);
+                        $('#count').html(`<h1>Sorry to see you die bitch haha</h1>`);
                         //animation
-                        burning_movement();
-                        alert('Die in hell!');
+                        burning_movement();        
+                       
 
                     }
                 }
@@ -294,6 +331,7 @@
         })
 
         $("#restart_game_button").click(function () {
+            clearcanvas();
             $("#game_setting").show();
             $("#game_container").hide();
             reset_game();
@@ -355,11 +393,11 @@
             ctx.drawImage(initial_character, 0, 0, 270, 135);
         }
         function clear_initial_character() {
-            ctx.clearRect(0,0,270,135)
+            ctx.clearRect(0, 0, 270, 135)
         }
 
         function clearcanvas() {
-            ctx.clearRect(0,0,270,1350)
+            ctx.clearRect(0, 0, 270, 1350)
 
         }
 
@@ -405,7 +443,7 @@
         }
 
         function updateFrame() {
-    
+
             curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
             //Calculating the x coordinate for spritesheet 
             srcX = curFrame * width;
