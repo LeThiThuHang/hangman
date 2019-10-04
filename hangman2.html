@@ -27,7 +27,7 @@
 
 <body>
     <div class='container text-center'>
-        <h1>Burning man challenges</h1>
+        <h1 id = 'header'>Burning man challenges</h1>
     </div>
 
     <!-- game setting page -->
@@ -39,13 +39,13 @@
             <div class='container'>
 
                 <div class='row'>
-                    <div type='button' class='col text-center p-2 border level' id='easy'>
+                    <div type='button' class='col text-center p-2 border level' id='easy' title='Number of characters between 1 to 5'>
                         Easy
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level' id='medium'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='medium' title='Number of characters between 6 to 8'>
                         Medium
                     </div>
-                    <div type='button' class='col text-center p-1 ml-2 border level' id='hard'>
+                    <div type='button' class='col text-center p-1 ml-2 border level' id='hard' title = 'Number of characters between 9 to 13'>
                         Hard
                     </div>
                 </div>
@@ -58,7 +58,7 @@
             </div>
 
             <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
-                PLAY
+                Play
             </div>
 
         </div>
@@ -71,23 +71,22 @@
     <!-- game container -->
     <div class='container' id='game_container' style="display:none">
         <div class='container animation border'>
-
             <div id='count'>
-                <h1>10 steps to die</h1>
+                <h1>Run away from the flame, be faster...10</h1>
             </div>
             <canvas id='canvas'></canvas>
-            <button onclick="burning_movement()">Falling</button>
-            <button onclick="walking_movement()">Walking</button>
+            <button id ='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button>
+            <!-- <button onclick="walking_movement()">Walking</button> -->
         </div>
 
-        <div class='container guessbox border'>
+        <div class='container guessbox'>
 
             <p id='chosen_word_display'>123</p>
 
         </div>
 
         <div class='container'>
-            Display the alphabet collection
+            Choose the character below: 
             <div class='row m-2'>
                 <div class='col button active border text-center p-1 alphabet' id='id1'>A</div>
                 <div class='col button active border text-center p-1 ml-1 alphabet'>B</div>
@@ -212,6 +211,9 @@
 
         /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
         function play_game() {
+            //draw the first image
+            initial_character_image();
+
             new_hidden_word = [...hidden_word]
 
             $(".alphabet").click(function () {
@@ -225,16 +227,11 @@
                     $(this).addClass("inactive");
                     guess_letter = $(this).text().toLowerCase()
 
-                    /* if (disabled == true) {
-                        if (chosen_word.includes(guess_letter) == false) {
-                            count++;
-                            $('#count').html(`<h1>${10 - count} steps to die</h1>`);
-                        }
-                    } */
 
                     if (disabled == true && chosen_word.includes(guess_letter) == false) {
                         count++;
-                        $('#count').html(`<h1>${10 - count} steps to die</h1>`);
+                        $('#count').html(`<h1>Run away from the flame, be faster...${10 - count}</h1>`);
+                        //animation
                         walking_movement();
                     }
 
@@ -258,6 +255,7 @@
                         new_hidden_word = '';
                     } else {
                         $('#count').html(`<h1>Sorry to see you die bitch</h1>`);
+                        //animation
                         burning_movement();
                         alert('Die in hell!');
 
@@ -302,6 +300,7 @@
         })
 
         $("#refresh_game_button").click(function () {
+            clearcanvas();
             reset_game();
             generate_word();
             display_word();
@@ -314,7 +313,7 @@
 
         /* position of canvas where we want to draw our sprite */
         let canvasWidth = 1400;
-        let canvasHeight = 270;
+        let canvasHeight = 160;
 
         //the position where the frame will be drawn
         let x = 0;
@@ -349,6 +348,22 @@
         let character = new Image();
         character.src = "photos/Megamanx running (5).png"
 
+        //create initial image on canvas
+        let initial_character = new Image();
+        initial_character.src = 'photos/standaloneman.png';
+        function initial_character_image() {
+            ctx.drawImage(initial_character, 0, 0, 270, 135);
+        }
+        function clear_initial_character() {
+            ctx.clearRect(0,0,270,135)
+        }
+
+        function clearcanvas() {
+            ctx.clearRect(0,0,270,1350)
+
+        }
+
+
 
         //The 0th (first) row is for the walking movement
         let burning = 0;
@@ -358,6 +373,8 @@
         let move_burning = false
 
         function walking_movement() {
+            clear_initial_character();
+
             move_burning = false;
 
             tID = setInterval(draw, 100);
@@ -368,16 +385,27 @@
         }
 
         function burning_movement() {
+            clear_initial_character();
             console.log('burning')
             move_burning = true;
             tID = setInterval(draw, 100);
             setTimeout(() => {
                 clearInterval(tID)
-            }, 10000);
+            }, 5000);
+        }
+
+        function burning_yourself() {
+            clear_initial_character();
+            console.log('burning')
+            move_burning = true;
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID)
+            }, 1000);
         }
 
         function updateFrame() {
-
+    
             curFrame = ++curFrame % cols; //update the frame count, currFrame %8 will rotate from 1 to 8
             //Calculating the x coordinate for spritesheet 
             srcX = curFrame * width;

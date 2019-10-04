@@ -5,6 +5,11 @@ body {
     font-family: 'Turret Road', cursive;
 }
 
+#header {
+    font-weight: 700;
+    margin: 1rem;
+}
+
 /* styling for first page */
 .level {
     height: 60px;
@@ -13,9 +18,14 @@ body {
     font-size:30px
 }
 
+.level:hover, .play:hover, .restart:hover, .refresh:hover, .alphabet:hover, #burning_button:hover {
+    background-color: black;
+    font-weight: 700;
+}
+
 .play, .restart, .refresh {
-    height:40px;
-    width: 160px;
+    height:50px;
+    width: 140px;
     color: white;
     background-color: orange;
     font-size:30px
@@ -26,7 +36,10 @@ body {
 }
 
 .animation {
-    height: 400px
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .animation h1{
@@ -34,15 +47,23 @@ body {
 }
 
 .guessbox {
-    height: 120px;
-    background-color: grey;
-    letter-spacing: 3px;
-    font-size: 3rem;
+    margin-left: 20%;
+    height: 80px;
+    letter-spacing: 4px;
+    font-size: 3.5rem;
+    font-weight:500;
 }
 
 .alphabet {
     color: white;
     background-color: orange;
+}
+
+
+#burning_button {
+    color: white;
+    background-color: orange;
+
 }
 
 
