@@ -468,7 +468,7 @@
         } */
 
         function walking_movement() {
-            console.log('walking movement')
+           
 
             $(".alphabet").off('click', game_play);
 
@@ -487,7 +487,7 @@
 
         function burning_movement() {
 
-            console.log('burning movement')
+          
 
             move_burning = true;
             tID_burning = setInterval(draw, 100);
@@ -497,7 +497,7 @@
         }
 
         function burning_movement_clearance() {
-            console.log('clearn burning movements')
+          
             clearInterval(tID_burning)
         }
 
@@ -519,7 +519,7 @@
 
 
         function animate_stop() {
-            console.log('animate_stop')
+           
             tID = setInterval(draw, 100);
             setTimeout(() => {
                 clearInterval(tID)
@@ -528,7 +528,7 @@
 
 
         function draw() {
-            console.log('draw')
+           
             updateFrame();
             ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
         }
