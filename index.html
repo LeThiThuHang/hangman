@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!-- for jquery -->
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
@@ -62,15 +64,6 @@
             </div>
             <div class='container d-flex justify-content-around mt-4'>
 
-                <!-- <div type='button' class='container text-center play mt-5 border' id='play_game_button'>
-                    Play
-                </div>
-                <div type='button' class='container text-center mt-5 border' id='game_rule_button'>
-                    Rule
-                </div> -->
-
-
-
                 <button type="button" class="btn" id='play_game_button'>Play</button>
 
                 <button type="button" class='btn' data-toggle="modal" data-target=".bd-example-modal-lg"
@@ -113,7 +106,7 @@
             </div>
             <canvas id='canvas'></canvas>
             <!-- <button id='burning_button' onclick="burning_yourself()" style="width:200px">Burn yourself!</button> -->
-            
+
         </div>
 
         <div class='container guessbox'>
@@ -201,6 +194,32 @@
             $(this).addClass('clicked')
         })
 
+        $("#play_game_button").click(function () {
+            reset_game();
+            $("#game_setting").hide();
+            $("#game_container").show();
+            choose_level();
+
+            generate_word();
+            display_word();
+            play_game();
+        })
+
+        $("#restart_game_button").click(function () {
+            reset_game();
+
+            $("#game_setting").show();
+            $("#game_container").hide();
+        })
+
+        $("#refresh_game_button").click(function () {
+            reset_game();
+
+            generate_word();
+            display_word();
+            play_game();
+        })
+
 
         /* get a word when player starts game
         https://www.wordsapi.com/#try
@@ -217,29 +236,49 @@
         let count = 0
         let word_length = 5;
 
+
+        function reset_game() {
+            count = 0;
+            $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
+            chosen_word = '';
+            hidden_word = '';
+            word_length = 5;
+
+            $(".alphabet").each(function () {
+
+                if ($(this).hasClass('inactive') == true) {
+                    $(this).css("background-color", "orange");
+                    $(this).removeClass('inactive')
+                    $(this).addClass('active')
+                }
+            })
+
+            reset_image_draw();
+            clear_initial_character();
+            clearcanvas();
+            burning_movement_clearance();
+
+        }
+
         /*when users click on the level, get the min length varied from 5 , 8 and 13 for the API call
                 default is 5 length*/
 
         function choose_level() {
-         
-            $('.level').each(function () {              
-                if ( $(this).hasClass('clicked') ) {
+
+            $('.level').each(function () {
+                if ($(this).hasClass('clicked')) {
                     let id = this.id
-                    console.log(id);
+
                     if (id == 'hard') {
                         word_length = 13
-                    } else if ( id == 'medium') {
+                    } else if (id == 'medium') {
                         word_length = 7
                     } else {
                         word_length = 5
                     }
                 }
             })
-
-            console.log(`choose leve function ${word_length}`)
-
             return word_length
-
         }
 
         /*after user choose level as easy, and click on play, generate a random word from the list easy*/
@@ -257,8 +296,6 @@
                 let random = Math.floor(Math.random() * hard_word_list.length)
                 chosen_word = hard_word_list[random].toLowerCase();
             }
-
-            console.log(`generate word function ${chosen_word}`)
         }
 
 
@@ -278,117 +315,74 @@
         }
 
 
+
         /*when the button play is clicked, hidden the settting game page and display another page, choose the word*/
         function play_game() {
             //draw the first image
-
             initial_character_image();
 
             new_hidden_word = [...hidden_word]
 
-            $(".alphabet").click(function () {
+            $(".alphabet").on('click', game_play);
 
-                disabled = $(this).hasClass("active")
+        }
 
-                if (count < 9) {
+        function game_play() {
 
-                    $(this).css("background-color", "gray");
-                    $(this).removeClass("active");
-                    $(this).addClass("inactive");
-                    guess_letter = $(this).text().toLowerCase()
+            disabled = $(this).hasClass("active")
 
+            if (count < 10) {
 
-                    if (disabled == true && chosen_word.includes(guess_letter) == false) {
-                        count++;
-                        /* $('#count').html(`<h1>Run away from the flame, be faster...${10 - count}</h1>`); */
-                        $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
-
-                        //animation
-                        walking_movement();
-                    }
-
-                    for (i = 0; i < chosen_word.length; i++) {
-                        if (chosen_word[i] == guess_letter) {
-                            new_hidden_word[i] = guess_letter
-                        }
-                    }
-
-                    $("#chosen_word_display").text(new_hidden_word.join(''))
-
-                    if (check_result(new_hidden_word) == true) {
-                        $('#count').html(`<h1>.<strong>You have guessed it right bitch! If you want, you still can burn yourself :</strong></h1>`);
-                        new_hidden_word = '';
-                    }
-
-                } else {
-
-                    if (check_result(new_hidden_word) == true) {
-                        $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :)</strong></h1>`);
-                        new_hidden_word = '';
-                    } else {
-                        $('#count').html(`<h1>Sorry to see you die bitch haha. The right word is ${chosen_word}</h1>`);
-                        //animation
-                        burning_movement();
+                $(this).css("background-color", "gray");
+                $(this).removeClass("active");
+                $(this).addClass("inactive");
+                guess_letter = $(this).text().toLowerCase()
 
 
+                if (disabled == true && chosen_word.includes(guess_letter) == false) {
+                    count++;
+
+                    $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
+
+                    //animation
+                    walking_movement();
+
+                }
+
+                for (i = 0; i < chosen_word.length; i++) {
+                    if (chosen_word[i] == guess_letter) {
+                        new_hidden_word[i] = guess_letter
                     }
                 }
+
+                $("#chosen_word_display").text(new_hidden_word.join(''))
+
+                if (check_result(new_hidden_word) == true) {
+                    $('#count').html(`<h1>.<strong>You have guessed it right! The right word is ${chosen_word}</strong></h1>`);
+                    new_hidden_word = '';
+                }
+
+            } else {
+
+                if (check_result(new_hidden_word) == true) {
+                    $('#count').html(`<h1>.<strong>You have guessed it right bitch!. If you want, you still can burn yourself :)</strong></h1>`);
+                    new_hidden_word = '';
+                } else {
+                    $('#count').html(`<h1>Sorry to see you die. The right word is ${chosen_word}</h1>`);
+                    //animation
+
+                    burning_movement();
+
+                }
+
 
             }
-            )
-
-        }
-
-        function reset_game() {
-            count = 0;
-            $('#count').html(`<h1>Guess it right in 10 guesses to not get burned ...<strong>${10 - count}</strong></h1>`);
-            chosen_word = '';
-            hidden_word = '';
-            word_length = 5;
-
-            $(".alphabet").each(function () {
-                console.log('each')
-                if ($(this).hasClass('inactive') == true) {
-                    $(this).css("background-color", "orange");
-                    $(this).removeClass('inactive')
-                    $(this).addClass('active')
-                }
-            })
-
         }
 
 
-        $("#play_game_button").click(function () {
-            $("#game_setting").hide();
-            $("#game_container").show();
-            choose_level();
-            generate_word();
-            display_word();
-            play_game();
-        })
-
-        $("#restart_game_button").click(function () {
-            burning_movement_clearance();
-            clearcanvas();
-            reset_image_draw();
-            $("#game_setting").show();
-            $("#game_container").hide();
-            reset_game();
-        })
-
-        $("#refresh_game_button").click(function () {
-
-            burning_movement_clearance();
-            clearcanvas();
-            reset_image_draw();
 
 
-            reset_game();
 
-            generate_word();
-            display_word();
-            play_game();
-        })
 
         //ANIMATION PART
         //use this variable to clear the setInterval
@@ -434,16 +428,25 @@
         //create initial image on canvas
         let initial_character = new Image();
         initial_character.src = 'photos/standaloneman.png';
+
+        function reset_image_draw() {
+            x = 0;
+            y = 0;
+            srcX = 0;
+            srcY = 0;
+            curFrame = 0;
+        }
+
         function initial_character_image() {
             ctx.drawImage(initial_character, 0, 0, 270, 135);
         }
+
         function clear_initial_character() {
             ctx.clearRect(0, 0, 270, 135)
         }
 
         function clearcanvas() {
             ctx.clearRect(0, 0, 1350, 270)
-
         }
 
 
@@ -464,47 +467,40 @@
             }, 1000);
         } */
 
-        let walking_queue = 0;
-
         function walking_movement() {
-            if (walking_queue == 0) {
-                walking_queue += 1;
-                clear_initial_character();
-                move_burning = false;
-                tID = setInterval(draw, 100);
-                setTimeout(() => {
-                    clearInterval(tID); walking_queue -= 1;
-                }, 1000);
-            }
+            console.log('walking movement')
+
+            $(".alphabet").off('click', game_play);
+
+            clear_initial_character();
+            move_burning = false;
+            tID = setInterval(draw, 100);
+            setTimeout(() => {
+                clearInterval(tID);
+                $(".alphabet").on('click', game_play);
+            }, 1500);
         }
 
-        let time_setting
+
+        let time_setting;
+        let tID_burning;
 
         function burning_movement() {
-            clear_initial_character();
+
+            console.log('burning movement')
 
             move_burning = true;
-            tID = setInterval(draw, 100);
+            tID_burning = setInterval(draw, 100);
             time_setting = setTimeout(() => {
-                clearInterval(tID);
-            }, 1000);
+                clearInterval(tID_burning);
+            }, 5000);
         }
 
         function burning_movement_clearance() {
-            clearTimeout(time_setting)
-            clearInterval(tID)
+            console.log('clearn burning movements')
+            clearInterval(tID_burning)
         }
 
-
-        function burning_yourself() {
-            clear_initial_character();
-            console.log('burning')
-            move_burning = true;
-            tID = setInterval(draw, 100);
-            setTimeout(() => {
-                clearInterval(tID)
-            }, 1000);
-        }
 
         function updateFrame() {
 
@@ -537,18 +533,14 @@
             ctx.drawImage(character, srcX, srcY, width, height, x, y, width, height);
         }
 
-        function reset_image_draw () {
-            x = 0;
-            y= 0;
-            srcX = 0;
-            srcY = 0;
-            curFrame = 0;
-        }
+
 
     </script>
 
 
 
+
+    <!-- for bootstrap-->
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

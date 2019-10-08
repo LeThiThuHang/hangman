@@ -20,7 +20,7 @@ body {
     border-radius: 10px;
 }
 
-.level:hover, .play:hover, .restart:hover, .refresh:hover, .alphabet:hover, #burning_button:hover, #game_rule_button:hover, #play_game_button:hover {
+.level:hover, .play:hover, .restart:hover, .refresh:hover, /* .alphabet:hover, */ #burning_button:hover, #game_rule_button:hover, #play_game_button:hover {
     background-color: black;
     font-weight: 700;
 }
