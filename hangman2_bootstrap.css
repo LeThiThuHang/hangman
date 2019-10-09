@@ -1,74 +1,153 @@
 @import url(https://fonts.googleapis.com/css?family=Turret+Road:200,300,400,500,700,800&display=swap);
 
+@media screen and (min-width: 411px) {
 
-body {
-    font-family: 'Turret Road', cursive;
-}
-
-#header {
-    font-weight: 700;
-    margin: 1rem;
-    font-size: 60px;
-}
-
-/* styling for first page */
-/*style for all button*/
-.level, .play, .restart, .refresh, #game_rule_button, #play_game_button, .alphabet, #burning_button {
-    color: white;
-    background-color: orange;
-    font-size:30px;
-    border-radius: 10px;
-}
-
-.level:hover, .play:hover, .restart:hover, .refresh:hover, /* .alphabet:hover, */ #burning_button:hover, #game_rule_button:hover, #play_game_button:hover {
-    background-color: black;
-    font-weight: 700;
-}
-
-.level {
-    height: 60px;
-}
-
-.play, .restart, .refresh, #game_rule_button, #play_game_button{
-    height:60px;
-    width: 140px;
-}
-
-#game_rule_button{
-    width: 200px
-}
-
-#burning_button {
-    background-color: darkorange;
-    font-size: 20px;
-    width:250px;
-    height:40px;
-}
-
-
-
-
-.photo {
-    height:100px
-}
-
-.animation {
-    height: 220px;
-    display: flex;
-    flex-direction: column;
+    body {
+        font-family: 'Turret Road', cursive;
+    }
     
+    #header {
+        font-weight: 700;
+        margin: 1rem;
+        font-size: 50px;
+    }
+    
+    /* styling for first page */
+    /*style for all button*/
+    .level, .play, .restart, .refresh, #game_rule_button, #play_game_button, .alphabet, #burning_button {
+        color: white;
+        background-color: orange;
+        font-size:30px;
+        border-radius: 10px;
+    }
+    
+    .level:hover, .play:hover, .restart:hover, .refresh:hover, /* .alphabet:hover, */ #burning_button:hover, #game_rule_button:hover, #play_game_button:hover {
+        background-color: black;
+        font-weight: 700;
+    }
+    
+    .level {
+        height: 60px;
+    }
+    
+    .play, .restart, .refresh, #game_rule_button, #play_game_button{
+        height:60px;
+        width: 140px;
+    }
+    
+    #game_rule_button{
+        width: 200px
+    }
+    
+    /* #burning_button {
+        background-color: darkorange;
+        font-size: 20px;
+        width:250px;
+        height:40px;
+    } */
+    
+    
+    .photo {
+        height:100px
+    }
+    
+    .animation {
+        height: 220px;
+        display: flex;
+        flex-direction: column;
+        
+    }
+    
+    .animation h1{
+        font-size: 20px
+    }
+    
+    .guessbox {
+        margin-left: 20%;
+        height: 80px;
+        letter-spacing: 4px;
+        font-size: 3.5rem;
+        font-weight:500;
+    }
 }
 
-.animation h1{
-    font-size: 20px
-}
 
-.guessbox {
-    margin-left: 20%;
-    height: 80px;
-    letter-spacing: 4px;
-    font-size: 3.5rem;
-    font-weight:500;
+@media screen and (max-width: 411px){
+    body {
+        font-family: 'Turret Road', cursive;
+    }
+    
+    #header {
+        font-weight: 700;
+        margin: 1rem;
+        font-size: 2rem;
+        width:100vw;
+        height:12vh;
+    }
+
+     /* styling for first page */
+    /*style for all button*/
+    .level, .play, .restart, .refresh, #game_rule_button, #play_game_button, .alphabet, #burning_button {
+        color: white;
+        background-color: orange;
+        font-size:2rem;
+        border-radius: 10px;
+    }
+
+    #choose_level_sentence {
+        margin-top:1rem;
+    }
+    
+    .level {
+        height: 8vh;
+        margin-top:1rem;
+    }
+
+    .play, #game_rule_button, #play_game_button{
+        height:8vh;
+        width: 30vw;
+        font-size: 1.5rem;
+    }
+
+    .restart, .refresh {
+        height: 5vh;
+        width: 30vw;
+        font-size: 1.5rem;
+        border-radius: 15px;
+    }
+
+    #game_rule_button{
+        width: 50vw;
+        margin-left:1em;
+    }
+
+    .photo_container {
+        height:50vh;
+        margin-top:1rem;
+    }
+
+
+    .animation {
+        height: 23vh;
+        display: flex;
+        flex-direction: column; 
+    }
+    
+    .animation h1{
+        font-size: 1rem;
+    }
+    
+    .guessbox {
+        margin-left: 20%;
+        height: 10vh;
+        letter-spacing: 4px;
+        font-size: 3rem;
+        font-weight:500;
+    }
+
+    #chosen_word_display {
+        margin-bottom:1rem;
+    }
 }
 
 
